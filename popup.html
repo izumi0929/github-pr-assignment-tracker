@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Assigned PRs</title>
+  <style>
+    body { font-family: sans-serif; min-width: 300px; padding: 10px; }
+    #pr-list { margin-top: 10px;  }
+    #loading-container { display: flex; flex-direction: column; align-items: center; }
+    #loading { margin-bottom: 10px; }
+    .pr-item { margin-bottom: 8px; }
+    button { margin-top: 10px; }
+    #refresh { background-color: #4D4EC4; }
+    #refresh:hover { background-color: #6d6fc8; }
+    #settings { background-color: #6c757d; }
+    #settings:hover { background-color: #7e8285; }
+  </style>
+</head>
+<body>
+  <h1 style="display:none">GitHub PR Assignment Tracker</h1>
+  <h2 id="title">Assigned PRs</h2>
+  <div id="pr-list">
+    <div id="loading-container">
+      <div id="loading">Loading...</div>
+      <div id="pr-list-content"><img src="octocat_search.png" alt="GitHub PR Assignment Tracker" width="100" height="100"></div>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+    <button id="refresh" style="color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Refresh</button>
+    <button id="settings" style="color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Settings</button>
+  </div>
+  <script src="i18n.js" defer></script>
+  <script src="popup.js" defer></script>
+</body>
+</html> 
