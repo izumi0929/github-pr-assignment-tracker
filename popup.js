@@ -69,11 +69,14 @@ async function fetchAssignedPRs() {
           div.innerHTML = `<a href="${pr.html_url}" target="_blank" style="color: #4D4EC4;">${pr.title}</a><br><small style="display: flex; align-items: center; gap: 4px;">${pr.repository_url.replace('https://api.github.com/repos/','')} (by <img src="https://github.com/${pr.user.login}.png" width="12" height="12" style="border-radius: 50%;"> ${pr.user.login})</small>`;
           prList.appendChild(div);
         });
+        chrome.action.setIcon({ path: 'icon_notification.png' });
       } else {
         prList.innerText = await i18n.t('no_visible_prs');
+        chrome.action.setIcon({ path: 'icon_default.png' });
       }
     } else {
       prList.innerText = await i18n.t('no_assigned_prs');
+      chrome.action.setIcon({ path: 'icon_default.png' });
     }
   } catch (error) {
     prList.innerText = `${await i18n.t('error_occurred')}: ${error.message}`;
