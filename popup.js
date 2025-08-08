@@ -10,6 +10,13 @@ function getSettings() {
 }
 
 async function fetchAssignedPRs() {
+  // Wake up the service worker and trigger a check
+  try {
+    chrome.runtime.sendMessage({ action: "checkPRs" });
+  } catch (e) {
+    console.log("Could not message background script:", e);
+  }
+
   const settings = await getSettings();
   const prList = document.getElementById('pr-list');
   if (!settings.token) {

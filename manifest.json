@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Show GitHub pull requests assigned to you.",
   "permissions": [
-    "storage"
+    "storage",
+    "alarms"
   ],
   "host_permissions": [
     "https://api.github.com/*"
