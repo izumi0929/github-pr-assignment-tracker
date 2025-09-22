@@ -70,57 +70,13 @@ async function fetchAssignedPRs() {
       });
       
       if (filteredPRs.length > 0) {
-        // 各PRのレビューリクエスト状況を個別に確認
-        const validPRs = [];
-        for (const pr of filteredPRs) {
-          try {
-            const prDetailRes = await fetch(pr.url, {
-              headers: {
-                'Authorization': `Bearer ${settings.token}`,
-                'Accept': 'application/vnd.github.v3+json'
-              }
-            });
-            
-            if (prDetailRes.ok) {
-              const prDetail = await prDetailRes.json();
-              
-              // レビューリクエストを取得
-              const reviewRequestsRes = await fetch(`${pr.url}/requested_reviewers`, {
-                headers: {
-                  'Authorization': `Bearer ${settings.token}`,
-                  'Accept': 'application/vnd.github.v3+json'
-                }
-              });
-              
-              if (reviewRequestsRes.ok) {
-                const reviewRequests = await reviewRequestsRes.json();
-                // 現在のユーザーがレビューリクエストに含まれているかチェック
-                const isStillRequested = reviewRequests.users.some(user => user.login === username);
-                
-                if (isStillRequested) {
-                  validPRs.push(pr);
-                }
-              }
-            }
-          } catch (error) {
-            // エラーが発生した場合は表示を維持（API制限等を考慮）
-            console.warn('Failed to check PR status:', error);
-            validPRs.push(pr);
-          }
-        }
-        
-        if (validPRs.length > 0) {
-          validPRs.forEach(pr => {
-            const div = document.createElement('div');
-            div.className = 'pr-item';
-            div.innerHTML = `<a href="${pr.html_url}" target="_blank" style="color: #4D4EC4;">${pr.title}</a><br><small style="display: flex; align-items: center; gap: 4px;">${pr.repository_url.replace('https://api.github.com/repos/','')} (by <img src="https://github.com/${pr.user.login}.png" width="12" height="12" style="border-radius: 50%;"> ${pr.user.login})</small>`;
-            prList.appendChild(div);
-          });
-          chrome.action.setIcon({ path: 'icon_notification.png' });
-        } else {
-          prList.innerText = await i18n.t('no_visible_prs');
-          chrome.action.setIcon({ path: 'icon_default.png' });
-        }
+        filteredPRs.forEach(pr => {
+          const div = document.createElement('div');
+          div.className = 'pr-item';
+          div.innerHTML = `<a href="${pr.html_url}" target="_blank" style="color: #4D4EC4;">${pr.title}</a><br><small style="display: flex; align-items: center; gap: 4px;">${pr.repository_url.replace('https://api.github.com/repos/','')} (by <img src="https://github.com/${pr.user.login}.png" width="12" height="12" style="border-radius: 50%;"> ${pr.user.login})</small>`;
+          prList.appendChild(div);
+        });
+        chrome.action.setIcon({ path: 'icon_notification.png' });
       } else {
         prList.innerText = await i18n.t('no_visible_prs');
         chrome.action.setIcon({ path: 'icon_default.png' });
